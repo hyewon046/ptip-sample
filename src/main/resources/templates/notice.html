@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>학교 공지사항</title>
+</head>
+<body>
+<h1>학교 공지사항</h1>
+<ul>
+    <li th:each="notice : ${notices}">
+        <a th:href="${notice.url}" th:text="${notice.title}" target="_blank"></a>
+        <p th:text="${notice.content}"></p>
+    </li>
+</ul>
+</body>
+</html>
