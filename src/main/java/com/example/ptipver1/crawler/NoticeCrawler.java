@@ -24,6 +24,9 @@ public class NoticeCrawler implements SiteCrawler {
                 String url = element.absUrl("href");
                 String title = element.text();
                 String content = element.text();
+                System.out.println(url);
+                System.out.println(title);
+                System.out.println(content);
                 notices.add(new NoticeDto(url, title, content));
             }
         } catch (Exception e) {
