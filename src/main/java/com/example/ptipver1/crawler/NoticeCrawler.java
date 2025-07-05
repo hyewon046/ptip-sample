@@ -17,18 +17,28 @@ public class NoticeCrawler implements SiteCrawler {
     public List<NoticeDto> fetchNotices() {
         List<NoticeDto> notices = new ArrayList<>();
         try {
-            Document doc = Jsoup.connect("https://www.ptu.ac.kr/bbs/www/310/32031/artclView.do").get(); //32031부분이 pk
+            Document doc = Jsoup.connect("https://www.ptu.ac.kr/bbs/www/310/32031/artclView.do").get(); //32031은 게시글 PK
             System.out.println(doc.title());
-            Elements items = doc.select(".view-title"); //이 부분을 어떤 태그로 넣어야할지
-            System.out.println(items.text());
 
-            for (Element element : items) {
-                String title = element.text();
-                String content = element.text();
-                System.out.println(title);
-                System.out.println(content);
-                notices.add(new NoticeDto(null, title, content));
-            }
+            //제목 가져오기
+            Element titleElement = doc.selectFirst(".view-title");
+            String title = titleElement != null ? titleElement.text().trim() : "(제목 없음)";
+
+            //본문가져오기
+            Element contentElement = doc.selectFirst(".view-con");
+            String originContent = contentElement != null ? contentElement.html() : "";
+            String content = originContent
+                    .replaceAll("(?i)<br\\s*/?>", "\n")
+                    .replaceAll("(?i)</p>", "\n")
+                    .replaceAll("&nbsp;", " ")
+                    .replaceAll("<[^>]*>", "")
+                    .trim()
+                    .replace("\n", "<br>");
+
+            System.out.println("제목: " + title);
+            System.out.println("내용: " + content);
+
+            notices.add(new NoticeDto(null, title, content));
         } catch (Exception e) {
             e.printStackTrace();
         }
