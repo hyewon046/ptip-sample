@@ -4,16 +4,22 @@ import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
 
 public class AIApi {
-    public static void main(String[] args) {
-        Client client = new Client();
+    public static String summarize(String content) {
+        try {
+            String prompt = "다음 내용을 3줄 이내로 요약해줘:\n" + content;
 
-        GenerateContentResponse response =
-                client.models.generateContent(
-                        "gemini-2.5-flash",
-                        "Explain how AI works in a few words",
-                        null);
+            Client client = new Client();
+            GenerateContentResponse response = client.models.generateContent(
+                    "gemini-2.5-flash",
+                    prompt,
+                    null
+            );
 
-        System.out.println(response.text());
+            return response.text();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "(요약 실패)";
+        }
     }
 
 }
