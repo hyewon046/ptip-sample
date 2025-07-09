@@ -1,7 +1,7 @@
 package com.example.ptipver1.controller;
 
-import com.example.ptipver1.aiApi.AIApi;
-import com.example.ptipver1.dto.NoticeDto;
+import com.example.ptipver1.summarize.AIApi;
+import com.example.ptipver1.dto.Notice;
 import com.example.ptipver1.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ public class NoticeController {
 
     @GetMapping("/notices")
     public String showNotices(Model model) {
-        List<NoticeDto> notices = noticeService.getNotices();
+        List<Notice> notices = noticeService.getNotices();
         model.addAttribute("notices", notices);
         return "notices";
     }

@@ -1,4 +1,4 @@
-package com.example.ptipver1.aiApi;
+package com.example.ptipver1.summarize;
 
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
@@ -6,7 +6,7 @@ import com.google.genai.types.GenerateContentResponse;
 public class AIApi {
     public static String summarize(String content) {
         try {
-            String prompt = "다음 내용을 3줄 이내로 요약해줘:\n" + content;
+            String prompt = "다음 내용을 5줄 이내로 요약해줘:\n" + content;
 
             Client client = new Client();
             GenerateContentResponse response = client.models.generateContent(
