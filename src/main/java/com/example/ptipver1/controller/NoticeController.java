@@ -1,6 +1,6 @@
 package com.example.ptipver1.controller;
 
-import com.example.ptipver1.summarize.AIApi;
+import com.example.ptipver1.summarize.GeminiSummarizer;
 import com.example.ptipver1.dto.Notice;
 import com.example.ptipver1.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class NoticeController {
 
     @PostMapping("/summary")
     public String summarizeContent(@RequestBody String content) {
-        return AIApi.summarize(content);
+        return GeminiSummarizer.summarize(content);
     }
 
 }

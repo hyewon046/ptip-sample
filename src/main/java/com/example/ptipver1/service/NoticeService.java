@@ -1,6 +1,6 @@
 package com.example.ptipver1.service;
 
-import com.example.ptipver1.summarize.AIApi;
+import com.example.ptipver1.summarize.GeminiSummarizer;
 import com.example.ptipver1.crawler.SiteCrawler;
 import com.example.ptipver1.dto.Notice;
 import com.example.ptipver1.repository.NoticeRepository;
@@ -19,23 +19,17 @@ public class NoticeService {
         this.repository = repository;
     }
 
-    // 크롤링 및 저장
     public void fetchAndSave() {
-        List<NoticeRaw> raws = crawler.fetchNotices();
-        for (NoticeRaw raw : raws) {
-            if (repository.findByOriginId(raw.originId()).isEmpty()) {
-                String summary = AIApi.summarize(raw.content()); // 요약 API 호출
-                Notice notice = Notice.from(raw, summary);
+        List<Notice> notices = crawler.fetchNotices();
+        for (Notice notice : notices) {
+            if (repository.findByOriginId(notice.getOriginId()).isEmpty()) {
                 repository.save(notice);
             }
         }
     }
 
-    public List<NoticeDto> getAll() {
-        return repository.findAll()
-                .stream()
-                .map(NoticeDto::from)
-                .toList();
+    public List<Notice> getNotices() {
+        return repository.findAll();
     }
 
     public String getSummaryById(Long id) {
