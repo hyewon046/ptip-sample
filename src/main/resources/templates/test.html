@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항 테스트</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+
+        .notice {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 14px;
+        }
+
+        .summary {
+            margin-top: 10px;
+            display: none;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+
+<h1>공지사항 목록</h1>
+<div id="notice-container">로딩 중...</div>
+
+<script>
+    async function fetchNotices() {
+        const container = document.getElementById('notice-container');
+        try {
+            const res = await fetch('/api/notices');
+            const data = await res.json();
+
+            container.innerHTML = '';
+
+            data.forEach(notice => {
+                const div = document.createElement('div');
+                div.className = 'notice';
+
+                div.innerHTML = `
+                        <strong>${notice.title}</strong><br>
+                        <a href="${notice.link}" target="_blank">원문 보기</a><br>
+                        <button>요약 보기</button>
+                        <div class="summary">${notice.summary}</div>
+                    `;
+
+                const button = div.querySelector('button');
+                const summaryDiv = div.querySelector('.summary');
+
+                button.addEventListener('click', () => {
+                    const isShown = summaryDiv.style.display === 'block';
+                    summaryDiv.style.display = isShown ? 'none' : 'block';
+                    button.textContent = isShown ? '요약 보기' : '요약 숨기기';
+                });
+
+                container.appendChild(div);
+            });
+
+        } catch (error) {
+            container.innerHTML = '공지사항을 불러오는 중 오류가 발생했습니다.';
+            console.error(error);
+        }
+    }
+
+    fetchNotices();
+</script>
+</body>
+</html>
